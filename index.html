@@ -4,36 +4,33 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sanity Roleplay</title>
-  <link rel="icon" href="sanity main logo.png" type="image/png" />
+  <link rel="icon" href="sanity_main_logo-removebg-preview.png" type="image/png" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
 
   <style>
     /* =================== Core / Variables =================== */
     *{margin:0;padding:0;box-sizing:border-box}
     html,body{height:100%}
-    body{
-      font-family:"Poppins",system-ui,Segoe UI,Roboto,Arial,sans-serif;
-      color:#fff; background:url("background.webp") center/cover fixed no-repeat;
-      overflow-x:hidden; position:relative;
-    }
     :root{
-      --red:#ff2c2c;         /* primaire kleur */
-      --red-2:#ff6b6b;
-      --aqua:#66e0ff;
-      --mint:#7dffe3;
-      --ink:#001018;
-      --glass:rgba(255,255,255,.06);
-      --glass-2:rgba(255,255,255,.12);
-      --stroke:rgba(255,255,255,.08);
-      --shadow:0 10px 30px rgba(0,0,0,.35);
-      --radius:18px;
+      --red:#ff2c2c; --aqua:#66e0ff; --mint:#7dffe3;
+      --glass:rgba(255,255,255,.06); --glass-2:rgba(255,255,255,.12);
+      --stroke:rgba(255,255,255,.08); --radius:18px;
     }
-
-    /* Pseudo-elementen mogen nooit kliks blokkeren */
+    /* pseudo’s blokkeren nooit kliks */
     *::before,*::after{pointer-events:none}
 
-    /* =================== Ambient layers =================== */
+    body{
+      font-family:"Poppins",system-ui,Segoe UI,Roboto,Arial,sans-serif;
+      color:#fff;
+      /* ✅ achtergrond = jouw logo */
+      background:
+        radial-gradient(60% 60% at 50% 20%, rgba(0,0,0,.35), rgba(0,0,0,.75) 70%),
+        url("sanity_main_logo-removebg-preview.png") center/contain no-repeat fixed;
+      overflow-x:hidden; position:relative;
+    }
     #particles-js{position:fixed;inset:0;z-index:-3}
+
+    /* ambient glows */
     .ambient{
       position:fixed;inset:0;z-index:-2;mixed-blend-mode:screen;
       background:
@@ -48,197 +45,130 @@
       background-size:160px 160px;
     }
 
-    /* =================== Utilities =================== */
+    /* helpers */
     .title-grad{
       background:linear-gradient(90deg,var(--red),#c44bff,var(--aqua),var(--mint),var(--red));
       background-size:300% 100%;
       -webkit-background-clip:text;background-clip:text;color:transparent;
-      animation:grad 8s linear infinite;
-      text-shadow:0 0 22px rgba(255,44,44,.35);
+      animation:grad 8s linear infinite; text-shadow:0 0 22px rgba(255,44,44,.35);
     }
     @keyframes grad{to{background-position:300% 0}}
 
-    .glassbox{
-      max-width:1150px;margin:68px auto;padding:44px;border-radius:var(--radius);
+    .glassbox{max-width:1150px;margin:68px auto;padding:44px;border-radius:var(--radius);
       background:rgba(0,0,0,.72);backdrop-filter:blur(14px);
-      border:1px solid var(--stroke);box-shadow:var(--shadow);position:relative;overflow:hidden;
-    }
-
-    /* luxe “plasma”-border bij hover */
-    .frame{
-      position:relative;border-radius:var(--radius);overflow:hidden;
-      border:1px solid var(--stroke);
-    }
-    .frame::before{
-      content:"";position:absolute;inset:-2px;border-radius:inherit;z-index:0;
+      border:1px solid var(--stroke);box-shadow:0 10px 30px rgba(0,0,0,.35);position:relative;overflow:hidden;}
+    .frame{position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid var(--stroke)}
+    .frame::before{content:"";position:absolute;inset:-2px;border-radius:inherit;z-index:0;
       background:conic-gradient(from 180deg at 50% 50%, transparent, rgba(255,44,44,.45), rgba(102,224,255,.45), rgba(125,255,227,.45), transparent 70%);
-      filter:blur(18px);opacity:0;transition:opacity .35s ease;
-    }
+      filter:blur(18px);opacity:0;transition:.35s}
     .frame:hover::before{opacity:1}
-
     .shine{position:relative;isolation:isolate}
-    .shine::after{
-      content:"";position:absolute;inset:-180% -50%;transform:rotate(12deg);
-      background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);
-      transition:transform .6s ease;z-index:0;
-    }
+    .shine::after{content:"";position:absolute;inset:-180% -50%;transform:rotate(12deg);
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);transition:.6s;z-index:0}
     .shine:hover::after{transform:translateX(60%) rotate(12deg)}
 
-    /* =================== Header =================== */
-    header{
-      position:fixed;top:0;left:0;right:0;z-index:1000;
-      padding:14px 50px;background:rgba(0,0,0,.55);backdrop-filter:blur(10px);
-      border-bottom:1px solid var(--stroke);display:flex;align-items:center;justify-content:space-between;
-      box-shadow:0 0 22px rgba(0,0,0,.6);
-    }
+    /* header */
+    header{position:fixed;top:0;left:0;right:0;z-index:1000;padding:14px 50px;
+      background:rgba(0,0,0,.55);backdrop-filter:blur(10px);border-bottom:1px solid var(--stroke);
+      display:flex;align-items:center;justify-content:space-between;box-shadow:0 0 22px rgba(0,0,0,.6);}
+    /* ✅ logo = jouw logo */
     header img{height:56px;filter:drop-shadow(0 0 16px var(--red))}
     nav ul{display:flex;gap:26px;list-style:none}
-    nav a{
-      color:#fff;text-decoration:none;font-weight:600;font-size:16.5px;padding:10px 14px;border-radius:10px;
-      position:relative;transition:transform .25s ease,color .25s ease;
-    }
-    nav a::after{
-      content:"";position:absolute;left:14px;right:14px;bottom:6px;height:2px;
-      background:linear-gradient(90deg,transparent,var(--red),transparent);
-      transform:scaleX(0);transform-origin:center;transition:transform .3s ease;
-      filter:drop-shadow(0 0 6px var(--red));
-    }
-    nav a:hover{color:#eaffff;transform:translateY(-2px)}
-    nav a:hover::after{transform:scaleX(1)}
+    nav a{color:#fff;text-decoration:none;font-weight:600;font-size:16.5px;padding:10px 14px;border-radius:10px;position:relative;transition:.25s}
+    nav a::after{content:"";position:absolute;left:14px;right:14px;bottom:6px;height:2px;
+      background:linear-gradient(90deg,transparent,var(--red),transparent);transform:scaleX(0);transition:.3s;filter:drop-shadow(0 0 6px var(--red))}
+    nav a:hover{color:#eaffff;transform:translateY(-2px)} nav a:hover::after{transform:scaleX(1)}
 
-    /* =================== Hero =================== */
-    .hero{
-      padding:185px 20px 120px;text-align:center;position:relative;overflow:hidden;
-      background:radial-gradient(60% 60% at 50% 20%, rgba(255,44,44,.16), rgba(0,0,0,.45) 70%);
-    }
-    /* orbit glow rond logo */
-    .hero .orb{
-      position:absolute;inset:auto 50% -120px;transform:translateX(-50%);
-      width:520px;height:520px;border-radius:50%;
-      background:radial-gradient(closest-side, rgba(255,44,44,.3), transparent 60%);
-      filter:blur(40px);z-index:-1;opacity:.55;
-    }
+    /* hero */
+    .hero{padding:185px 20px 120px;text-align:center;position:relative;overflow:hidden;
+      background:radial-gradient(60% 60% at 50% 20%, rgba(255,44,44,.16), rgba(0,0,0,.45) 70%);}
+    .hero .orb{position:absolute;inset:auto 50% -120px;transform:translateX(-50%);width:520px;height:520px;border-radius:50%;
+      background:radial-gradient(closest-side, rgba(255,44,44,.3), transparent 60%);filter:blur(40px);z-index:-1;opacity:.55;}
+    /* ✅ hero-image = jouw logo */
     .hero img{height:150px;margin-bottom:18px;filter:drop-shadow(0 0 28px var(--red));animation:floaty 6s ease-in-out infinite}
     @keyframes floaty{50%{transform:translateY(-6px)}}
     .hero h1{font-size:62px;margin-bottom:10px}
     .hero p{font-size:22px;opacity:.92;letter-spacing:.2px}
 
-    /* =================== Sections =================== */
+    /* sections */
     h2{font-size:40px;margin-bottom:26px}
 
-    /* =================== Sollicitaties (In Dev) =================== */
+    /* sollicitaties */
     .sol-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:28px}
-    .sol-card{
-      border-radius:16px;padding:24px;text-align:center;background:var(--glass);
+    .sol-card{border-radius:16px;padding:24px;text-align:center;background:var(--glass);
       border:1px solid var(--stroke);box-shadow:0 0 10px rgba(255,44,44,.18);
-      transition:transform .28s ease,box-shadow .28s ease,background .28s ease;
-      position:relative;
-    }
+      transition:.28s;position:relative}
     .sol-card:hover{transform:translateY(-6px) scale(1.02);background:var(--glass-2);box-shadow:0 0 28px rgba(255,44,44,.45)}
     .sol-card img{width:92px;height:92px;margin-bottom:12px;object-fit:contain}
     .sol-card p{font-size:18px;font-weight:800}
-    .dev{
-      margin-top:10px;display:inline-flex;align-items:center;gap:8px;
-      font-size:12.5px;font-weight:900;color:#ffb3b3;border:1px solid #ffb3b3;border-radius:999px;padding:7px 12px;text-transform:uppercase;
-      background:radial-gradient(70% 70% at 30% 20%, rgba(255,179,179,.18), transparent);
-    }
+    .dev{margin-top:10px;display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:900;color:#ffb3b3;
+      border:1px solid #ffb3b3;border-radius:999px;padding:7px 12px;text-transform:uppercase;
+      background:radial-gradient(70% 70% at 30% 20%, rgba(255,179,179,.18), transparent)}
     .dev svg{width:14px;height:14px}
 
-    /* =================== Staff =================== */
+    /* staff */
     .staff-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:35px}
-    .staff-card{
-      padding:24px;border-radius:18px;background:var(--glass);border:1px solid var(--stroke);
-      box-shadow:0 6px 18px rgba(255,44,44,.12);transition:transform .35s ease,box-shadow .35s ease;
-      perspective:1000px;text-align:center;position:relative;overflow:hidden;
-    }
+    .staff-card{padding:24px;border-radius:18px;background:var(--glass);border:1px solid var(--stroke);
+      box-shadow:0 6px 18px rgba(255,44,44,.12);transition:.35s;perspective:1000px;text-align:center;position:relative;overflow:hidden}
     .staff-card:hover{transform:translateY(-10px);box-shadow:0 0 40px rgba(255,44,44,.6)}
-    /* conic ring avatar */
-    .avatar{
-      --sz:126px;width:var(--sz);height:var(--sz);border-radius:50%;margin:0 auto 12px;position:relative;
-    }
-    .avatar::before{
-      content:"";position:absolute;inset:-2px;border-radius:inherit;
-      background:conic-gradient(from 210deg, var(--red), var(--aqua), var(--mint), var(--red));
-      filter:blur(10px);opacity:.75;
-    }
-    .avatar img{
-      position:absolute;inset:6px;border-radius:50%;width:calc(100% - 12px);height:calc(100% - 12px);object-fit:cover;
-      box-shadow:0 0 22px var(--red);transition:transform .3s;z-index:1;
-    }
+    .avatar{--sz:126px;width:var(--sz);height:var(--sz);border-radius:50%;margin:0 auto 12px;position:relative}
+    .avatar::before{content:"";position:absolute;inset:-2px;border-radius:inherit;
+      background:conic-gradient(from 210deg, var(--red), var(--aqua), var(--mint), var(--red));filter:blur(10px);opacity:.75}
+    .avatar img{position:absolute;inset:6px;border-radius:50%;width:calc(100% - 12px);height:calc(100% - 12px);object-fit:cover;
+      box-shadow:0 0 22px var(--red);transition:.3s;z-index:1}
     .staff-card:hover .avatar img{transform:rotate(2deg) scale(1.06)}
     .staff-name{font-weight:800;font-size:18px;letter-spacing:.2px}
-    .tag{
-      display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:8px 13px;border-radius:999px;font-size:13px;font-weight:900;border:1px solid currentColor;
-      box-shadow:0 0 10px currentColor;
-    }
+    .tag{display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:8px 13px;border-radius:999px;font-size:13px;font-weight:900;border:1px solid currentColor;box-shadow:0 0 10px currentColor}
     .tag.beheer{color:#ffd86b;text-shadow:0 0 8px rgba(255,216,107,.35)}
     .tag.mede{color:var(--aqua);text-shadow:0 0 8px rgba(102,224,255,.35)}
 
-    /* =================== Discord =================== */
+    /* discord */
     .discord-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px}
-    .discord-card{
-      text-decoration:none;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:14px;
-      padding:20px 22px;border-radius:16px;background:var(--glass);border:1px solid var(--stroke);position:relative;
-      transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
-    }
-    .discord-card::before{
-      content:"";position:absolute;inset:-2px;border-radius:inherit;z-index:0;opacity:0;transition:opacity .35s ease;
-      background:conic-gradient(from 0deg, rgba(255,44,44,.5), rgba(102,224,255,.5), rgba(125,255,227,.5), rgba(255,44,44,.5));
-      filter:blur(14px);
-    }
+    .discord-card{text-decoration:none;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:14px;
+      padding:20px 22px;border-radius:16px;background:var(--glass);border:1px solid var(--stroke);position:relative;transition:.25s}
+    .discord-card::before{content:"";position:absolute;inset:-2px;border-radius:inherit;z-index:0;opacity:0;transition:.35s;
+      background:conic-gradient(from 0deg, rgba(255,44,44,.5), rgba(102,224,255,.5), rgba(125,255,227,.5), rgba(255,44,44,.5));filter:blur(14px)}
     .discord-card:hover{transform:translateY(-4px);background:var(--glass-2);box-shadow:0 0 24px rgba(255,44,44,.45)}
     .discord-card:hover::before{opacity:1}
     .d-left{display:flex;align-items:center;gap:14px;z-index:1}
-    .d-ico{
-      width:46px;height:46px;border-radius:12px;display:grid;place-items:center;flex:0 0 auto;position:relative;overflow:hidden;
-      background:linear-gradient(180deg,var(--red),#0ab0e5);box-shadow:0 6px 14px rgba(255,44,44,.35);
-    }
+    .d-ico{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;flex:0 0 auto;position:relative;overflow:hidden;
+      background:linear-gradient(180deg,var(--red),#0ab0e5);box-shadow:0 6px 14px rgba(255,44,44,.35)}
     .d-title{font-weight:900;font-size:18px}
     .d-arrow{font-size:18px;opacity:.9;z-index:1}
 
-    /* =================== Shop & Footer =================== */
+    /* shop & footer */
     .shop p{font-size:24px;animation:pulse 1.5s infinite}
     @keyframes pulse{0%{text-shadow:0 0 10px var(--red)}50%{text-shadow:0 0 26px var(--red)}100%{text-shadow:0 0 10px var(--red)}}
+    footer{text-align:center;padding:24px;margin:70px 0 20px;background:rgba(0,0,0,.82);border-top:1px solid var(--stroke);color:#cfd9ff}
 
-    footer{
-      text-align:center;padding:24px;margin:70px 0 20px;background:rgba(0,0,0,.82);
-      border-top:1px solid var(--stroke);color:#cfd9ff
-    }
-
-    /* Floating APV */
-    .apv-float{
-      position:fixed;right:24px;bottom:24px;z-index:100;
-      background:linear-gradient(90deg,var(--red),#0ab0e5);color:#fff;border:1px solid var(--stroke);
-      padding:14px 20px;border-radius:999px;font-weight:800;text-decoration:none;box-shadow:0 0 18px rgba(255,44,44,.55);
-      transition:transform .25s ease, box-shadow .25s ease;
-    }
+    /* APV floater */
+    .apv-float{position:fixed;right:24px;bottom:24px;z-index:100;background:linear-gradient(90deg,var(--red),#0ab0e5);
+      color:#fff;border:1px solid var(--stroke);padding:14px 20px;border-radius:999px;font-weight:800;text-decoration:none;box-shadow:0 0 18px rgba(255,44,44,.55);transition:.25s}
     .apv-float:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 0 26px rgba(255,44,44,.75)}
 
-    /* Focus styles */
-    a:focus-visible,button:focus-visible{outline:3px solid var(--aqua);outline-offset:2px;border-radius:12px}
-
-    /* Responsive */
+    /* responsive */
     @media (max-width:720px){
       header{padding:12px 18px}
       .hero{padding-top:160px}
       .glassbox{margin:54px auto;padding:28px}
+      /* achtergrond op mobiel: iets kleiner */
+      body{background:
+        radial-gradient(60% 60% at 50% 20%, rgba(0,0,0,.35), rgba(0,0,0,.75) 70%),
+        url("sanity_main_logo-removebg-preview.png") center/80% no-repeat fixed;}
     }
-
-    /* Respect reduced motion */
     @media (prefers-reduced-motion:reduce){
       .shine::after,.title-grad,.hero img{animation:none}
     }
   </style>
 </head>
 <body>
-  <!-- Ambient layers -->
   <div id="particles-js"></div>
   <div class="ambient"></div>
   <div class="noise"></div>
 
   <!-- Header -->
   <header>
-    <img src="sanity main logo.png" alt="Sanity Roleplay Logo">
+    <img src="sanity_main_logo-removebg-preview.png" alt="Sanity Roleplay Logo">
     <nav>
       <ul>
         <li><a href="#home">Home</a></li>
@@ -255,74 +185,44 @@
   <!-- Hero -->
   <section class="hero frame" id="home">
     <div class="orb" aria-hidden="true"></div>
-    <img src="sanity main logo.png" alt="Server Logo">
+    <img src="sanity_main_logo-removebg-preview.png" alt="Server Logo">
     <h1 class="title-grad">Sanity Roleplay</h1>
     <p>De realistische Nederlandse RP ervaring</p>
   </section>
 
-  <!-- Sollicitaties (alles In Dev) -->
-  <section class="glassbox frame shine" id="sollicitaties" aria-labelledby="sol-title">
-    <h2 id="sol-title" class="title-grad">Solliciteer Hier</h2>
+  <!-- Sollicitaties (In Dev) -->
+  <section class="glassbox frame shine" id="sollicitaties">
+    <h2 class="title-grad">Solliciteer Hier</h2>
     <div class="sol-grid">
-      <div class="sol-card">
-        <img src="politie.webp" alt="Politie"><p>Politie</p>
-        <span class="dev" title="In ontwikkeling">
-          <!-- lock icon -->
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 10V7a5 5 0 0 1 10 0v3"/><rect x="5" y="10" width="14" height="10" rx="2"/></svg>
-          In Dev
-        </span>
-      </div>
-      <div class="sol-card">
-        <img src="Kmar.webp" alt="KMar"><p>KMar</p>
-        <span class="dev" title="In ontwikkeling"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 10V7a5 5 0 0 1 10 0v3"/><rect x="5" y="10" width="14" height="10" rx="2"/></svg>In Dev</span>
-      </div>
-      <div class="sol-card">
-        <img src="anwb.webp" alt="ANWB"><p>ANWB</p>
-        <span class="dev" title="In ontwikkeling"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 10V7a5 5 0 0 1 10 0v3"/><rect x="5" y="10" width="14" height="10" rx="2"/></svg>In Dev</span>
-      </div>
-      <div class="sol-card">
-        <img src="ambu.webp" alt="Ambulance"><p>Ambulance</p>
-        <span class="dev" title="In ontwikkeling"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 10V7a5 5 0 0 1 10 0v3"/><rect x="5" y="10" width="14" height="10" rx="2"/></svg>In Dev</span>
-      </div>
-      <div class="sol-card">
-        <img src="advocaat.webp" alt="Advocaat"><p>Advocaat</p>
-        <span class="dev" title="In ontwikkeling"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 10V7a5 5 0 0 1 10 0v3"/><rect x="5" y="10" width="14" height="10" rx="2"/></svg>In Dev</span>
-      </div>
+      <div class="sol-card"><img src="politie.webp" alt="Politie"><p>Politie</p><span class="dev" title="In ontwikkeling"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 10V7a5 5 0 0 1 10 0v3"/><rect x="5" y="10" width="14" height="10" rx="2"/></svg>In Dev</span></div>
+      <div class="sol-card"><img src="Kmar.webp" alt="KMar"><p>KMar</p><span class="dev" title="In ontwikkeling"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 10V7a5 5 0 0 1 10 0v3"/><rect x="5" y="10" width="14" height="10" rx="2"/></svg>In Dev</span></div>
+      <div class="sol-card"><img src="anwb.webp" alt="ANWB"><p>ANWB</p><span class="dev" title="In ontwikkeling"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 10V7a5 5 0 0 1 10 0v3"/><rect x="5" y="10" width="14" height="10" rx="2"/></svg>In Dev</span></div>
+      <div class="sol-card"><img src="ambu.webp" alt="Ambulance"><p>Ambulance</p><span class="dev" title="In ontwikkeling"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 10V7a5 5 0 0 1 10 0v3"/><rect x="5" y="10" width="14" height="10" rx="2"/></svg>In Dev</span></div>
+      <div class="sol-card"><img src="advocaat.webp" alt="Advocaat"><p>Advocaat</p><span class="dev" title="In ontwikkeling"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 10V7a5 5 0 0 1 10 0v3"/><rect x="5" y="10" width="14" height="10" rx="2"/></svg>In Dev</span></div>
     </div>
   </section>
 
   <!-- Staff -->
-  <section class="glassbox frame shine" id="staff" aria-labelledby="staff-title">
-    <h2 id="staff-title" class="title-grad">Staff Team</h2>
+  <section class="glassbox frame shine" id="staff">
+    <h2 class="title-grad">Staff Team</h2>
     <div class="staff-grid">
-      <!-- Beheer (hoogste) -->
       <div class="staff-card">
-        <div class="avatar">
-          <img src="finn-ezgif.com-webp-to-jpg-converter.jpg" alt="[SRP] 𝐅𝐢𝐧𝐧.𝐕">
-        </div>
+        <div class="avatar"><img src="finn-ezgif.com-webp-to-jpg-converter.jpg" alt="[SRP] 𝐅𝐢𝐧𝐧.𝐕"></div>
         <div class="staff-name">[SRP] 𝐅𝐢𝐧𝐧.𝐕</div>
         <span class="tag beheer">👑 Beheer</span>
       </div>
       <div class="staff-card">
-        <div class="avatar">
-          <img src="sanity logo.webp" alt="[SRP] Skipzzy">
-        </div>
+        <div class="avatar"><img src="sanity logo.webp" alt="[SRP] Skipzzy"></div>
         <div class="staff-name">[SRP] Skipzzy</div>
         <span class="tag beheer">👑 Beheer</span>
       </div>
-
-      <!-- Mede Beheer -->
       <div class="staff-card">
-        <div class="avatar">
-          <img src="kevin.webp" alt="[SRP] Kevin">
-        </div>
+        <div class="avatar"><img src="kevin.webp" alt="[SRP] Kevin"></div>
         <div class="staff-name">[SRP] Kevin</div>
         <span class="tag mede">🛠️ Mede Beheer</span>
       </div>
       <div class="staff-card">
-        <div class="avatar">
-          <img src="profile kus 911.webp" alt="[SRP] 𝙠𝐮𝓼🔱">
-        </div>
+        <div class="avatar"><img src="profile kus 911.webp" alt="[SRP] 𝙠𝐮𝓼🔱"></div>
         <div class="staff-name">[SRP] 𝙠𝐮𝓼🔱</div>
         <span class="tag mede">🛠️ Mede Beheer</span>
       </div>
@@ -330,51 +230,34 @@
   </section>
 
   <!-- Shop -->
-  <section class="glassbox frame shine" id="shop" aria-labelledby="shop-title">
-    <h2 id="shop-title" class="title-grad">Shop</h2>
+  <section class="glassbox frame shine" id="shop">
+    <h2 class="title-grad">Shop</h2>
     <p>🚧 Coming Soon 🚧</p>
   </section>
 
   <!-- Discord -->
-  <section class="glassbox frame shine" id="discord" aria-labelledby="disc-title">
-    <h2 id="disc-title" class="title-grad">Onze Discords</h2>
+  <section class="glassbox frame shine" id="discord">
+    <h2 class="title-grad">Onze Discords</h2>
     <div class="discord-grid">
       <a class="discord-card" href="https://discord.gg/2FNf2fKHRj" target="_blank" rel="noopener">
-        <div class="d-left">
-          <div class="d-ico">
-            <!-- Discord svg -->
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="#001018" aria-hidden="true">
-              <path d="M20.317 4.369A19.91 19.91 0 0 0 16.558 3c-.177.312-.381.73-.523 1.061a18.27 18.27 0 0 0-4.07 0A7.26 7.26 0 0 0 11.44 3c-1.38.246-2.73.64-3.76 1.37C4.22 7.44 3.53 10.42 3.8 13.36c1.58 1.18 3.11 1.9 4.62 2.37.37-.5.7-1.04.99-1.61-.55-.2-1.08-.45-1.57-.74.13-.1.26-.2.38-.31 2.98 1.39 6.21 1.39 9.17 0 .13.11.25.21.38.31-.49.29-1.02.54-1.57.74.29.57.62 1.11.99 1.61 1.52-.48 3.06-1.2 4.63-2.37.33-3.46-.5-6.37-2.41-8.99ZM9.7 12.91c-.9 0-1.64-.83-1.64-1.85s.72-1.86 1.64-1.86c.91 0 1.65.83 1.64 1.86 0 1.02-.73 1.85-1.64 1.85Zm4.62 0c-.9 0-1.64-.83-1.64-1.85s.73-1.86 1.64-1.86 1.65.83 1.64 1.86c0 1.02-.73 1.85-1.64 1.85Z"/>
-            </svg>
-          </div>
-          <span class="d-title">Main Discord</span>
-        </div>
-        <span class="d-arrow">↗</span>
+        <div class="d-left"><div class="d-ico">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="#001018" aria-hidden="true"><path d="M20.317 4.369A19.91 19.91 0 0 0 16.558 3c-.177.312-.381.73-.523 1.061a18.27 18.27 0 0 0-4.07 0A7.26 7.26 0 0 0 11.44 3c-1.38.246-2.73.64-3.76 1.37C4.22 7.44 3.53 10.42 3.8 13.36c1.58 1.18 3.11 1.9 4.62 2.37.37-.5.7-1.04.99-1.61-.55-.2-1.08-.45-1.57-.74.13-.1.26-.2.38-.31 2.98 1.39 6.21 1.39 9.17 0 .13.11.25.21.38.31-.49.29-1.02.54-1.57.74.29.57.62 1.11.99 1.61 1.52-.48 3.06-1.2 4.63-2.37.33-3.46-.5-6.37-2.41-8.99ZM9.7 12.91c-.9 0-1.64-.83-1.64-1.85s.73-1.86 1.64-1.86c.91 0 1.65.83 1.64 1.86 0 1.02-.73 1.85-1.64 1.85Zm4.62 0c-.9 0-1.64-.83-1.64-1.85s.73-1.86 1.64-1.86 1.65.83 1.64 1.86c0 1.02-.73 1.85-1.64 1.85Z"/></svg>
+        </div><span class="d-title">Main Discord</span></div><span class="d-arrow">↗</span>
       </a>
-
       <a class="discord-card" href="https://discord.gg/C9ECRvNtCJ" target="_blank" rel="noopener">
-        <div class="d-left">
-          <div class="d-ico">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="#001018" aria-hidden="true"><path d="M20.317 4.369A19.91 19.91 0 0 0 16.558 3c-.177.312-.381.73-.523 1.061a18.27 18.27 0 0 0-4.07 0A7.26 7.26 0 0 0 11.44 3c-1.38.246-2.73.64-3.76 1.37C4.22 7.44 3.53 10.42 3.8 13.36c1.58 1.18 3.11 1.9 4.62 2.37.37-.5.7-1.04.99-1.61-.55-.2-1.08-.45-1.57-.74.13-.1.26-.2.38-.31 2.98 1.39 6.21 1.39 9.17 0 .13.11.25.21.38.31-.49.29-1.02.54-1.57.74.29.57.62 1.11.99 1.61 1.52-.48 3.06-1.2 4.63-2.37.33-3.46-.5-6.37-2.41-8.99ZM9.7 12.91c-.9 0-1.64-.83-1.64-1.85s.73-1.86 1.64-1.86c.91 0 1.65.83 1.64 1.86 0 1.02-.73 1.85-1.64 1.85Zm4.62 0c-.9 0-1.64-.83-1.64-1.85s.73-1.86 1.64-1.86 1.65.83 1.64 1.86c0 1.02-.73 1.85-1.64 1.85Z"/></svg>
-          </div>
-          <span class="d-title">Onderwereld Discord</span>
-        </div>
-        <span class="d-arrow">↗</span>
+        <div class="d-left"><div class="d-ico">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="#001018" aria-hidden="true"><path d="M20.317 4.369A19.91 19.91 0 0 0 16.558 3c-.177.312-.381.73-.523 1.061a18.27 18.27 0 0 0-4.07 0A7.26 7.26 0 0 0 11.44 3c-1.38.246-2.73.64-3.76 1.37C4.22 7.44 3.53 10.42 3.8 13.36c1.58 1.18 3.11 1.9 4.62 2.37.37-.5.7-1.04.99-1.61-.55-.2-1.08-.45-1.57-.74.13-.1.26-.2.38-.31 2.98 1.39 6.21 1.39 9.17 0 .13.11.25.21.38.31-.49.29-1.02.54-1.57.74.29.57.62 1.11.99 1.61 1.52-.48 3.06-1.2 4.63-2.37.33-3.46-.5-6.37-2.41-8.99ZM9.7 12.91c-.9 0-1.64-.83-1.64-1.85s.73-1.86 1.64-1.86c.91 0 1.65.83 1.64 1.86 0 1.02-.73 1.85-1.64 1.85Zm4.62 0c-.9 0-1.64-.83-1.64-1.85s.73-1.86 1.64-1.86 1.65.83 1.64 1.86c0 1.02-.73 1.85-1.64 1.85Z"/></svg>
+        </div><span class="d-title">Onderwereld Discord</span></div><span class="d-arrow">↗</span>
       </a>
-
       <a class="discord-card" href="https://discord.gg/3hmq5rcseW" target="_blank" rel="noopener">
-        <div class="d-left">
-          <div class="d-ico">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="#001018" aria-hidden="true"><path d="M20.317 4.369A19.91 19.91 0 0 0 16.558 3c-.177.312-.381.73-.523 1.061a18.27 18.27 0 0 0-4.07 0A7.26 7.26 0 0 0 11.44 3c-1.38.246-2.73.64-3.76 1.37C4.22 7.44 3.53 10.42 3.8 13.36c1.58 1.18 3.11 1.9 4.62 2.37.37-.5.7-1.04.99-1.61-.55-.2-1.08-.45-1.57-.74.13-.1.26-.2.38-.31 2.98 1.39 6.21 1.39 9.17 0 .13.11.25.21.38.31-.49.29-1.02.54-1.57.74.29.57.62 1.11.99 1.61 1.52-.48 3.06-1.2 4.63-2.37.33-3.46-.5-6.37-2.41-8.99ZM9.7 12.91c-.9 0-1.64-.83-1.64-1.85s.73-1.86 1.64-1.86c.91 0 1.65.83 1.64 1.86 0 1.02-.73 1.85-1.64 1.85Zm4.62 0c-.9 0-1.64-.83-1.64-1.85s.73-1.86 1.64-1.86 1.65.83 1.64 1.86c0 1.02-.73 1.85-1.64 1.85Z"/></svg>
-          </div>
-          <span class="d-title">Support Discord</span>
-        </div>
-        <span class="d-arrow">↗</span>
+        <div class="d-left"><div class="d-ico">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="#001018" aria-hidden="true"><path d="M20.317 4.369A19.91 19.91 0 0 0 16.558 3c-.177.312-.381.73-.523 1.061a18.27 18.27 0 0 0-4.07 0A7.26 7.26 0 0 0 11.44 3c-1.38.246-2.73.64-3.76 1.37C4.22 7.44 3.53 10.42 3.8 13.36c1.58 1.18 3.11 1.9 4.62 2.37.37-.5.7-1.04.99-1.61-.55-.2-1.08-.45-1.57-.74.13-.1.26-.2.38-.31 2.98 1.39 6.21 1.39 9.17 0 .13.11.25.21.38.31-.49.29-1.02.54-1.57.74.29.57.62 1.11.99 1.61 1.52-.48 3.06-1.2 4.63-2.37.33-3.46-.5-6.37-2.41-8.99ZM9.7 12.91c-.9 0-1.64-.83-1.64-1.85s.73-1.86 1.64-1.86c.91 0 1.65.83 1.64 1.86 0 1.02-.73 1.85-1.64 1.85Zm4.62 0c-.9 0-1.64-.83-1.64-1.85s.73-1.86 1.64-1.86 1.65.83 1.64 1.86c0 1.02-.73 1.85-1.64 1.85Z"/></svg>
+        </div><span class="d-title">Support Discord</span></div><span class="d-arrow">↗</span>
       </a>
     </div>
   </section>
 
-  <!-- APV Floating -->
+  <!-- APV Float -->
   <a class="apv-float" href="https://docs.google.com/document/d/1yt9bgapdtOqKmYWsBrX-6S7TajwA77raRYcGIVQYPDM/edit?usp=sharing" target="_blank" rel="noopener">📜 APV</a>
 
   <!-- Footer -->
@@ -382,7 +265,6 @@
     &copy; 2025 Sanity Roleplay • Website door 𝙠𝐮𝓼🔱
   </footer>
 
-  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
   <script>
     particlesJS.load('particles-js','https://cdn.jsdelivr.net/gh/VincentGarreau/particles.js/particles.json');
